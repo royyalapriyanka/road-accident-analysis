@@ -1,13 +1,23 @@
+from dotenv import load_dotenv
+import os
+
+# Load variables from .env
+load_dotenv()
 import mysql.connector
 import matplotlib.pyplot as plt
+print("Connecting with:")
+print("User:", os.getenv("DB_USER"))
+print("Password:", os.getenv("DB_PASSWORD"))
+print("Database:", os.getenv("DB_NAME"))
 
 # Connect to MySQL
 conn = mysql.connector.connect(
     host="localhost",
-    user="root",           # your MySQL username
-    password="Priyanka@123",   # your MySQL password
-    database="AccidentTables"     # your MySQL DB name
+    user=os.getenv("DB_USER"),
+    password=os.getenv("DB_PASSWORD"),
+    database=os.getenv("DB_NAME")
 )
+
 cursor = conn.cursor()
 
 # Function to insert data

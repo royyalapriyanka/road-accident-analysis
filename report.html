@@ -15,6 +15,7 @@
         }
         canvas {
             margin-bottom: 25px;
+            max-width: 100%;
         }
         input, select {
             padding: 8px;
@@ -26,14 +27,13 @@
             margin-top: 30px;
         }
         table {
-            width: 100%;
             border-collapse: collapse;
-            margin-top: 10px;
+            width: 100%;
         }
         th, td {
             padding: 10px;
-            border: 1px solid #ccc;
             text-align: center;
+            border: 1px solid #ccc;
         }
         th {
             background-color: #f0f0f0;
@@ -44,10 +44,10 @@
 
     <h1>Road Accident Analysis Report</h1>
 
-    <!-- Chart.js Bar Chart -->
-    <canvas id="accidentChart" width="600" height="250"></canvas>
+    <!-- Chart.js Dynamic Chart -->
+    <canvas id="accidentChart" width="600" height="300"></canvas>
 
-    <!-- Search and Filter Inputs -->
+    <!-- Search and Filter -->
     <input type="text" id="searchInput" placeholder="Search by location..." onkeyup="filterTable()">
     <select id="severityFilter" onchange="filterTable()">
         <option value="">All Severities</option>
@@ -58,7 +58,7 @@
 
     <!-- Accident Data Table -->
     <h2>Accident Data Table</h2>
-    <table>
+    <table id="accidentTable">
         <tr>
             <th>ID</th>
             <th>Date</th>
@@ -69,47 +69,41 @@
         </tr>
         <tr><td>1</td><td>2025-06-21</td><td>10:30:00</td><td>Hyderabad</td><td>Pothole</td><td>Minor</td></tr>
         <tr><td>2</td><td>2025-06-21</td><td>12:15:00</td><td>Secunderabad</td><td>Overspeeding</td><td>Major</td></tr>
-        <tr><td>3</td><td>2025-06-22</td><td>9:45:00</td><td>Vizag</td><td>Drunk driving</td><td>Fatal</td></tr>
+        <tr><td>3</td><td>2025-06-22</td><td>09:45:00</td><td>Vizag</td><td>Drunk driving</td><td>Fatal</td></tr>
         <tr><td>4</td><td>2025-06-23</td><td>14:00:00</td><td>Vijayawada</td><td>Signal jump</td><td>Minor</td></tr>
-        <tr><td>5</td><td>2025-06-21</td><td>10:30:00</td><td>Hyderabad</td><td>Pothole</td><td>Minor</td></tr>
-        <tr><td>6</td><td>2025-06-21</td><td>12:15:00</td><td>Secunderabad</td><td>Overspeeding</td><td>Major</td></tr>
-        <tr><td>7</td><td>2025-06-22</td><td>9:45:00</td><td>Vizag</td><td>Drunk driving</td><td>Fatal</td></tr>
-        <tr><td>8</td><td>2025-06-23</td><td>14:00:00</td><td>Vijayawada</td><td>Signal jump</td><td>Minor</td></tr>
-        <tr><td>9</td><td>2025-06-21</td><td>10:30:00</td><td>Hyderabad</td><td>Pothole</td><td>Minor</td></tr>
-        <tr><td>10</td><td>2025-06-21</td><td>12:15:00</td><td>Secunderabad</td><td>Overspeeding</td><td>Major</td></tr>
-        <tr><td>11</td><td>2025-06-22</td><td>9:45:00</td><td>Vizag</td><td>Drunk driving</td><td>Fatal</td></tr>
-        <tr><td>12</td><td>2025-06-23</td><td>14:00:00</td><td>Vijayawada</td><td>Signal jump</td><td>Minor</td></tr>
     </table>
 
-    <!-- JavaScript: Chart + Filtering -->
     <script>
-        // Chart.js setup
+        // Chart.js: accident cause count
         const ctx = document.getElementById('accidentChart').getContext('2d');
         new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Hyderabad', 'Secunderabad', 'Vizag', 'Vijayawada'],
+                labels: ['Pothole', 'Overspeeding', 'Drunk driving', 'Signal jump'],
                 datasets: [{
                     label: 'Number of Accidents',
-                    data: [3, 3, 3, 3],
+                    data: [1, 1, 1, 1], // Adjust based on actual data
                     backgroundColor: ['green', 'blue', 'red', 'orange']
                 }]
             },
             options: {
+                responsive: true,
                 scales: {
                     y: {
                         beginAtZero: true,
-                        ticks: { stepSize: 1 }
+                        ticks: {
+                            stepSize: 1
+                        }
                     }
                 }
             }
         });
 
-        // Filter logic (location + severity)
+        // Search + Severity Filter
         function filterTable() {
             const input = document.getElementById("searchInput").value.toLowerCase();
             const severityFilter = document.getElementById("severityFilter").value.toLowerCase();
-            const rows = document.querySelectorAll("table tr:not(:first-child)");
+            const rows = document.querySelectorAll("#accidentTable tr:not(:first-child)");
 
             rows.forEach(row => {
                 const location = row.cells[3].textContent.toLowerCase();
